@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -13,9 +16,17 @@ class LoginController extends Controller
         return view('admin.auth.login');
     }
     public function login(LoginRequest $request){
+
+        // $user = Admin::where('username', $request->username)->first();
+
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     return response()->json(['message' => 'Invalid credentials'], 401);
+        // }
         if(auth()->guard('admin')->attempt(['username'=>$request->input('username') , 'password'=>$request->input('password')])){
             return redirect()->route('admin.dashboard');
         };
+        // return redirect()->route('admin.dashboard');
+
     }
     public function logout(){
         auth()->logout();

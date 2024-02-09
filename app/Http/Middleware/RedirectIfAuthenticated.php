@@ -23,8 +23,27 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::Admin);
+                if($request->is('admin') || $request->is('admin/*')){
+                    // redirect for backend
+                    return redirect(RouteServiceProvider::Admin);
+                }
+                else{
+                    // redirect for frontend in case front
+                   // return redirect(RouteServiceProvider::HOME);
+                   return redirect(RouteServiceProvider::Admin);
+    
+                }            
             }
+            // if($request->is('admin') || $request->is('admin/*')){
+            //     // redirect for backend
+            //     return redirect(RouteServiceProvider::Admin);
+            // }
+            // else{
+            //     // redirect for frontend in case front
+            //    // return redirect(RouteServiceProvider::HOME);
+            //    return redirect(RouteServiceProvider::Admin);
+
+            // }
         }
 
         return $next($request);
